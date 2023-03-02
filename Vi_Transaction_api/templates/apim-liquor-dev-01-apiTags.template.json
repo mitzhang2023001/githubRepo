@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "displayName": "VITransactions"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/vi-transaction-api/VITransactions_GetVITransaction/VITransactions')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations/tags",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "displayName": "VITransactionDetails"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/vi-transaction-api/VITransactionDetails_GetVITransactionDetails/VITransactionDetails')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations/tags",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations/tags', parameters('ApimServiceName'), 'vi-transaction-api', 'VITransactions_GetVITransaction', 'VITransactions')]"
+      ]
+    },
+    {
+      "properties": {
+        "displayName": "VITransactions"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/vi-transaction-api/VITransactions_GetVITransactions/VITransactions')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations/tags",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations/tags', parameters('ApimServiceName'), 'vi-transaction-api', 'VITransactionDetails_GetVITransactionDetails', 'VITransactionDetails')]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+<!--
+    IMPORTANT:
+    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
+    - Only the <forward-request> policy element can appear within the <backend> section element.
+    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
+    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
+    - To add a policy position the cursor at the desired insertion point and click on the round button associated with the policy.
+    - To remove a policy, delete the corresponding policy statement from the policy document.
+    - Policies are applied in the order of their appearance, from the top down.
+-->
+<policies>
+	<inbound>
+		<check-header name="X-Azure-FDID" failed-check-httpcode="401" failed-check-error-message="Not authorized" ignore-case="false">
+			<value>a6139942-9021-4d2d-b991-b1fb7e598475</value>
+		</check-header>
+		<cors>
+			<allowed-origins>
+				<origin>https://apim-liquor-dev-01.developer.azure-api.net</origin>
+				<origin>https://apim-dev.cloudapps.bcldb.com/</origin>
+				<origin>https://apim-portal-dev.cloudapps.bcldb.com</origin>
+				<origin>https://apiportal-dev.cloudapps.bcldb.com</origin>
+				<origin>https://apimgmt-dev.cloudapps.bcldb.com</origin>
+				<origin>https://localhost</origin>
+				<origin>http://localhost</origin>
+				<origin>https://localhost:3000</origin>
+				<origin>http://localhost:3000</origin>
+				<origin>https://red-river-065f7f003.2.azurestaticapps.net/</origin>
+			</allowed-origins>
+			<allowed-methods preflight-result-max-age="300">
+				<method>*</method>
+			</allowed-methods>
+			<allowed-headers>
+				<header>*</header>
+			</allowed-headers>
+			<expose-headers>
+				<header>*</header>
+			</expose-headers>
+		</cors>
+	</inbound>
+	<backend>
+		<forward-request timeout="3000" fail-on-error-status-code="true" />
+	</backend>
+	<outbound>
+		<!--CORS
+        <set-header name="Access-Control-Allow-Credentials" exists-action="override">
+            <value>true</value>
+        </set-header>
+        <set-header name="Access-Control-Allow-Headers" exists-action="override">
+            <value>*</value>
+        </set-header>
+        <set-header name="Access-Control-Allow-Origin" exists-action="override">
+            <value>@(context.Request.Headers.GetValueOrDefault("Origin",""))</value>
+        </set-header>-->
+	</outbound>
+	<on-error />
+</policies>

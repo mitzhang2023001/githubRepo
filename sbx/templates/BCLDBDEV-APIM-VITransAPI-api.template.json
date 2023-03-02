@@ -1,0 +1,508 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "PolicyXMLSasToken": {
+      "type": "string"
+    },
+    "PolicyXMLBaseUrl": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "description": "Retrieve Visual Importer transactions information\r\nThis API requires a valid Visual Importer account",
+        "authenticationSettings": {
+          "subscriptionKeyRequired": false
+        },
+        "subscriptionKeyParameterNames": {
+          "header": "Ocp-Apim-Subscription-Key",
+          "query": "subscription-key"
+        },
+        "apiRevision": "1",
+        "isCurrent": true,
+        "subscriptionRequired": true,
+        "displayName": "VITransAPI",
+        "serviceUrl": "https://azservicesqa.ecustoms.com/VITransactionAPI",
+        "path": "VITransAPI",
+        "protocols": [
+          "https"
+        ]
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI')]",
+      "type": "Microsoft.ApiManagement/service/apis",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "contentType": "application/vnd.ms-azure-apim.swagger.definitions+json",
+        "document": {
+          "value": "{\"VITransactionRecord\":{\"type\":\"object\",\"required\":[\"date\"],\"properties\":{\"transactionNumber\":{\"type\":\"string\"},\"b3Type\":{\"type\":\"string\"},\"releaseStatus\":{\"type\":\"string\"},\"confirmStatus\":{\"type\":\"string\"},\"importerCode\":{\"type\":\"string\"},\"importerName\":{\"type\":\"string\"},\"dateType\":{\"type\":\"string\"},\"date\":{\"type\":\"string\",\"format\":\"date-time\"}}},\"VITransactionData\":{\"type\":\"object\",\"properties\":{\"transactionNumber\":{\"type\":\"string\"},\"b3Type\":{\"type\":\"string\"},\"releaseStatus\":{\"type\":\"string\"},\"confirmStatus\":{\"type\":\"string\"},\"carmRevisionNumber\":{\"type\":\"string\"},\"entryDate\":{\"type\":\"string\"},\"releaseDate\":{\"type\":\"string\"},\"accountingDate\":{\"type\":\"string\"},\"portCode\":{\"type\":\"string\"},\"deliveryInstructions\":{\"type\":\"string\"},\"shipmentQuantities\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/ShipmentQuantity\"}},\"shipmentWeight\":{\"type\":\"integer\",\"format\":\"int32\"},\"shipmentWeightUnit\":{\"type\":\"string\"},\"cargoControlNumbers\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/CargoControlNumber\"}},\"containers\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/Container\"}},\"tradePartners\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/TradePartner\"}},\"invoices\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/Invoice\"}}}},\"ShipmentQuantity\":{\"type\":\"object\",\"properties\":{\"quantity\":{\"type\":\"integer\",\"format\":\"int32\"},\"quantityUnit\":{\"type\":\"string\"}}},\"CargoControlNumber\":{\"type\":\"object\",\"properties\":{\"ccno\":{\"type\":\"string\"}}},\"Container\":{\"type\":\"object\",\"properties\":{\"containerNo\":{\"type\":\"string\"}}},\"TradePartner\":{\"type\":\"object\",\"properties\":{\"type\":{\"type\":\"string\"},\"code\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"address\":{\"type\":\"string\"},\"city\":{\"type\":\"string\"},\"countryName\":{\"type\":\"string\"},\"stateProvinceCode\":{\"type\":\"string\"}}},\"Invoice\":{\"type\":\"object\",\"properties\":{\"invoiceNo\":{\"type\":\"string\"},\"invoiceDate\":{\"type\":\"string\"},\"poNo\":{\"type\":\"string\"},\"poDate\":{\"type\":\"string\"},\"referenceNumber\":{\"type\":\"string\"}}},\"VITransactionDetails\":{\"type\":\"object\",\"required\":[\"lastReleaseStatusDateTime\",\"lastConfirmStatusDateTime\",\"entryDate\",\"releaseDate\",\"shipmentWeightGross\",\"shipmentWeightNet\"],\"properties\":{\"transactionNumber\":{\"type\":\"string\"},\"carmRevisionNumber\":{\"type\":\"string\"},\"importerCode\":{\"type\":\"string\"},\"importerName\":{\"type\":\"string\"},\"b3TypeCode\":{\"type\":\"string\"},\"b3SubtypeCode\":{\"type\":\"string\"},\"releaseStatusCode\":{\"type\":\"string\"},\"lastReleaseStatusMessage\":{\"type\":\"string\"},\"lastReleaseStatusDateTime\":{\"type\":\"string\",\"format\":\"date-time\"},\"confirmStatusCode\":{\"type\":\"string\"},\"lastConfirmStatusMessage\":{\"type\":\"string\"},\"lastConfirmStatusDateTime\":{\"type\":\"string\",\"format\":\"date-time\"},\"exWarehouseTransactionTypeCode\":{\"type\":\"string\"},\"entryDate\":{\"type\":\"string\",\"format\":\"date-time\"},\"releaseDate\":{\"type\":\"string\",\"format\":\"date-time\"},\"portCode\":{\"type\":\"string\"},\"usPortOfExitCode\":{\"type\":\"string\"},\"portOfUnladingCode\":{\"type\":\"string\"},\"warehouseNumber\":{\"type\":\"string\"},\"forwardToCustomsOfficeCode\":{\"type\":\"string\"},\"destinationWarehouseNumber\":{\"type\":\"string\"},\"cargoControlNumbers\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/CargoControlNumber\"}},\"containers\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/Container\"}},\"shipmentWeightGross\":{\"type\":\"integer\",\"format\":\"int32\"},\"shipmentWeightNet\":{\"type\":\"integer\",\"format\":\"int32\"},\"shipmentWeightUnit\":{\"type\":\"string\"},\"modeOfTransportCode\":{\"type\":\"string\"},\"carrierCode\":{\"type\":\"string\"},\"carrierName\":{\"type\":\"string\"},\"shipmentQuantities\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/ShipmentQuantity\"}},\"headerReferenceNumber\":{\"type\":\"string\"},\"b3Comments\":{\"type\":\"string\"},\"b3Notes\":{\"type\":\"string\"},\"invoices\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/InvoiceDetails\"}}}},\"InvoiceDetails\":{\"type\":\"object\",\"required\":[\"cciSequenceNumber\",\"cciQuantity\"],\"properties\":{\"cciSequenceNumber\":{\"type\":\"integer\",\"format\":\"int32\"},\"b3SubheaderNumber\":{},\"commercialInvoiceNumber\":{\"type\":\"string\"},\"commercialInvoiceDate\":{\"type\":\"string\"},\"poNumber\":{\"type\":\"string\"},\"poDate\":{},\"referenceNumber\":{\"type\":\"string\"},\"vendorCode\":{\"type\":\"string\"},\"vendorName\":{\"type\":\"string\"},\"consigneeCode\":{\"type\":\"string\"},\"consigneeName\":{\"type\":\"string\"},\"countryOfExportCode\":{\"type\":\"string\"},\"dateOfDirectShipment\":{\"type\":\"string\"},\"cciQuantity\":{\"type\":\"integer\",\"format\":\"int32\"},\"cciQuantityUnitCode\":{\"type\":\"string\"},\"lines\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/LineDetails\"}}}},\"LineDetails\":{\"type\":\"object\",\"required\":[\"lineSequence\",\"b3PrintedLineNumber\",\"invoiceQuantity\",\"b3Qty1\",\"b3Qty2\",\"b3WarehouseQty\",\"vfcc\",\"exchangeRate\",\"vfdAmt\",\"dutyRate\",\"exciseRate\",\"exciseTaxAmount\",\"gstRate\",\"totalDutyAndExcise\",\"simaAmt\",\"bottlesPerCase\",\"bottleSize\",\"alcoholPercentage\",\"timeLimit\"],\"properties\":{\"lineSequence\":{\"type\":\"integer\",\"format\":\"int32\"},\"b3PrintedLineNumber\":{\"type\":\"integer\",\"format\":\"int32\"},\"partNumber\":{\"type\":\"string\"},\"partDescription\":{\"type\":\"string\"},\"invoiceQuantity\":{\"type\":\"number\",\"format\":\"float\"},\"invoiceUnitCode\":{\"type\":\"string\"},\"b3Qty1\":{\"type\":\"number\",\"format\":\"float\"},\"b3UnitCode1\":{\"type\":\"string\"},\"b3Qty2\":{\"type\":\"number\",\"format\":\"float\"},\"b3UnitCode2\":{\"type\":\"string\"},\"b3WarehouseQty\":{\"type\":\"number\",\"format\":\"float\"},\"b3WarehouseUnitCode\":{\"type\":\"string\"},\"vfcc\":{\"type\":\"number\",\"format\":\"float\"},\"currencyCode\":{\"type\":\"string\"},\"exchangeRate\":{\"type\":\"number\",\"format\":\"float\"},\"vfdAmt\":{\"type\":\"number\",\"format\":\"float\"},\"hsCode\":{\"type\":\"string\"},\"tariffCode\":{\"type\":\"string\"},\"countryOfOriginCode\":{\"type\":\"string\"},\"provinceStateOfOriginCode\":{\"type\":\"string\"},\"tariffTreatmentCode\":{\"type\":\"string\"},\"dutyRate\":{\"type\":\"number\",\"format\":\"float\"},\"dutyType\":{\"type\":\"string\"},\"exciseRate\":{\"type\":\"number\",\"format\":\"float\"},\"exciseType\":{\"type\":\"string\"},\"exciseTaxCode\":{\"type\":\"string\"},\"exciseTaxAmount\":{\"type\":\"number\",\"format\":\"float\"},\"gstCode\":{\"type\":\"string\"},\"gstRate\":{\"type\":\"number\",\"format\":\"float\"},\"gstRateIndicator\":{\"type\":\"string\"},\"totalDutyAndExcise\":{\"type\":\"number\",\"format\":\"float\"},\"simaCode\":{\"type\":\"string\"},\"simaAmt\":{\"type\":\"number\",\"format\":\"float\"},\"previousTransactionNumber\":{\"type\":\"string\"},\"previousLineNumber\":{\"type\":\"string\"},\"b3LineReference\":{\"type\":\"string\"},\"cadAdjustmentReasonCode\":{\"type\":\"string\"},\"cadAdjustmentNarrative\":{\"type\":\"string\"},\"bottlesPerCase\":{\"type\":\"number\",\"format\":\"float\"},\"bottleSize\":{\"type\":\"number\",\"format\":\"float\"},\"alcoholPercentage\":{\"type\":\"number\",\"format\":\"float\"},\"timeLimit\":{\"type\":\"integer\",\"format\":\"int32\"},\"timeUnit\":{\"type\":\"string\"},\"timeLimitDate\":{}}}}"
+        }
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI/63ed7343200ea708cc3a8ade')]",
+      "type": "Microsoft.ApiManagement/service/apis/schemas",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'VITransAPI')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "transactionNumber",
+            "description": "Full Transaction number in 99999-99999999-9 format (\"-\" are optional)",
+            "type": "string",
+            "required": true,
+            "values": []
+          }
+        ],
+        "description": "Get VI Transaction data for a specific Transaction Number",
+        "request": {
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "OK - Returns the details of a specific VI Transaction",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionData"
+              },
+              {
+                "contentType": "application/json",
+                "sample": "{\r\n  \"transactionNumber\": \"string\",\r\n  \"b3Type\": \"string\",\r\n  \"releaseStatus\": \"string\",\r\n  \"confirmStatus\": \"string\",\r\n  \"carmRevisionNumber\": \"string\",\r\n  \"entryDate\": \"string\",\r\n  \"releaseDate\": \"string\",\r\n  \"accountingDate\": \"string\",\r\n  \"portCode\": \"string\",\r\n  \"deliveryInstructions\": \"string\",\r\n  \"shipmentQuantities\": [\r\n    {\r\n      \"quantity\": 0,\r\n      \"quantityUnit\": \"string\"\r\n    }\r\n  ],\r\n  \"shipmentWeight\": 0,\r\n  \"shipmentWeightUnit\": \"string\",\r\n  \"cargoControlNumbers\": [\r\n    {\r\n      \"ccno\": \"string\"\r\n    }\r\n  ],\r\n  \"containers\": [\r\n    {\r\n      \"containerNo\": \"string\"\r\n    }\r\n  ],\r\n  \"tradePartners\": [\r\n    {\r\n      \"type\": \"string\",\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"address\": \"string\",\r\n      \"city\": \"string\",\r\n      \"countryName\": \"string\",\r\n      \"stateProvinceCode\": \"string\"\r\n    }\r\n  ],\r\n  \"invoices\": [\r\n    {\r\n      \"invoiceNo\": \"string\",\r\n      \"invoiceDate\": \"string\",\r\n      \"poNo\": \"string\",\r\n      \"poDate\": \"string\",\r\n      \"referenceNumber\": \"string\"\r\n    }\r\n  ]\r\n}",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionData"
+              },
+              {
+                "contentType": "text/json",
+                "sample": "{\r\n  \"transactionNumber\": \"string\",\r\n  \"b3Type\": \"string\",\r\n  \"releaseStatus\": \"string\",\r\n  \"confirmStatus\": \"string\",\r\n  \"carmRevisionNumber\": \"string\",\r\n  \"entryDate\": \"string\",\r\n  \"releaseDate\": \"string\",\r\n  \"accountingDate\": \"string\",\r\n  \"portCode\": \"string\",\r\n  \"deliveryInstructions\": \"string\",\r\n  \"shipmentQuantities\": [\r\n    {\r\n      \"quantity\": 0,\r\n      \"quantityUnit\": \"string\"\r\n    }\r\n  ],\r\n  \"shipmentWeight\": 0,\r\n  \"shipmentWeightUnit\": \"string\",\r\n  \"cargoControlNumbers\": [\r\n    {\r\n      \"ccno\": \"string\"\r\n    }\r\n  ],\r\n  \"containers\": [\r\n    {\r\n      \"containerNo\": \"string\"\r\n    }\r\n  ],\r\n  \"tradePartners\": [\r\n    {\r\n      \"type\": \"string\",\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"address\": \"string\",\r\n      \"city\": \"string\",\r\n      \"countryName\": \"string\",\r\n      \"stateProvinceCode\": \"string\"\r\n    }\r\n  ],\r\n  \"invoices\": [\r\n    {\r\n      \"invoiceNo\": \"string\",\r\n      \"invoiceDate\": \"string\",\r\n      \"poNo\": \"string\",\r\n      \"poDate\": \"string\",\r\n      \"referenceNumber\": \"string\"\r\n    }\r\n  ]\r\n}",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionData"
+              }
+            ]
+          },
+          {
+            "statusCode": 204,
+            "description": "NoContent - The requested transaction number could not be found",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 400,
+            "description": "BadRequest - Missing or invalid parameters",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "description": "Unauthorized - Missing or invalid credentials",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 500,
+            "description": "InternalServerError - Unexpected error",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          }
+        ],
+        "displayName": "Get VI Transaction data for a specific Transaction Number",
+        "method": "GET",
+        "urlTemplate": "/api/VITransactions/{transactionNumber}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI/VITransactions_GetVITransaction')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'VITransAPI')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'VITransAPI', '63ed7343200ea708cc3a8ade')]"
+      ]
+    },
+    {
+      "properties": {
+        "displayName": "VITransactions"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI/VITransactions_GetVITransaction/VITransactions')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations/tags",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('ApimServiceName'), 'VITransAPI', 'VITransactions_GetVITransaction')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "transactionNumber",
+            "description": "Full Transaction number in 99999-99999999-9 format (\"-\" are optional)",
+            "type": "string",
+            "required": true,
+            "values": []
+          }
+        ],
+        "description": "Get VI Transaction details for a specific Transaction Number",
+        "request": {
+          "queryParameters": [
+            {
+              "name": "CARMRevisionNumber",
+              "description": "[For future use] Optional Revision Number – if left blank, the system will assume the current CARM revision number ",
+              "type": "string",
+              "required": false,
+              "values": []
+            }
+          ],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "OK - Returns the details of a specific VI Transaction",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionDetails"
+              },
+              {
+                "contentType": "application/json",
+                "sample": "{\r\n  \"transactionNumber\": \"string\",\r\n  \"carmRevisionNumber\": \"string\",\r\n  \"importerCode\": \"string\",\r\n  \"importerName\": \"string\",\r\n  \"b3TypeCode\": \"string\",\r\n  \"b3SubtypeCode\": \"string\",\r\n  \"releaseStatusCode\": \"string\",\r\n  \"lastReleaseStatusMessage\": \"string\",\r\n  \"lastReleaseStatusDateTime\": \"string\",\r\n  \"confirmStatusCode\": \"string\",\r\n  \"lastConfirmStatusMessage\": \"string\",\r\n  \"lastConfirmStatusDateTime\": \"string\",\r\n  \"exWarehouseTransactionTypeCode\": \"string\",\r\n  \"entryDate\": \"string\",\r\n  \"releaseDate\": \"string\",\r\n  \"portCode\": \"string\",\r\n  \"usPortOfExitCode\": \"string\",\r\n  \"portOfUnladingCode\": \"string\",\r\n  \"warehouseNumber\": \"string\",\r\n  \"forwardToCustomsOfficeCode\": \"string\",\r\n  \"destinationWarehouseNumber\": \"string\",\r\n  \"cargoControlNumbers\": [\r\n    {\r\n      \"ccno\": \"string\"\r\n    }\r\n  ],\r\n  \"containers\": [\r\n    {\r\n      \"containerNo\": \"string\"\r\n    }\r\n  ],\r\n  \"shipmentWeightGross\": 0,\r\n  \"shipmentWeightNet\": 0,\r\n  \"shipmentWeightUnit\": \"string\",\r\n  \"modeOfTransportCode\": \"string\",\r\n  \"carrierCode\": \"string\",\r\n  \"carrierName\": \"string\",\r\n  \"shipmentQuantities\": [\r\n    {\r\n      \"quantity\": 0,\r\n      \"quantityUnit\": \"string\"\r\n    }\r\n  ],\r\n  \"headerReferenceNumber\": \"string\",\r\n  \"b3Comments\": \"string\",\r\n  \"b3Notes\": \"string\",\r\n  \"invoices\": [\r\n    {\r\n      \"cciSequenceNumber\": 0,\r\n      \"b3SubheaderNumber\": {},\r\n      \"commercialInvoiceNumber\": \"string\",\r\n      \"commercialInvoiceDate\": \"string\",\r\n      \"poNumber\": \"string\",\r\n      \"poDate\": {},\r\n      \"referenceNumber\": \"string\",\r\n      \"vendorCode\": \"string\",\r\n      \"vendorName\": \"string\",\r\n      \"consigneeCode\": \"string\",\r\n      \"consigneeName\": \"string\",\r\n      \"countryOfExportCode\": \"string\",\r\n      \"dateOfDirectShipment\": \"string\",\r\n      \"cciQuantity\": 0,\r\n      \"cciQuantityUnitCode\": \"string\",\r\n      \"lines\": [\r\n        {\r\n          \"lineSequence\": 0,\r\n          \"b3PrintedLineNumber\": 0,\r\n          \"partNumber\": \"string\",\r\n          \"partDescription\": \"string\",\r\n          \"invoiceQuantity\": 0.0,\r\n          \"invoiceUnitCode\": \"string\",\r\n          \"b3Qty1\": 0.0,\r\n          \"b3UnitCode1\": \"string\",\r\n          \"b3Qty2\": 0.0,\r\n          \"b3UnitCode2\": \"string\",\r\n          \"b3WarehouseQty\": 0.0,\r\n          \"b3WarehouseUnitCode\": \"string\",\r\n          \"vfcc\": 0.0,\r\n          \"currencyCode\": \"string\",\r\n          \"exchangeRate\": 0.0,\r\n          \"vfdAmt\": 0.0,\r\n          \"hsCode\": \"string\",\r\n          \"tariffCode\": \"string\",\r\n          \"countryOfOriginCode\": \"string\",\r\n          \"provinceStateOfOriginCode\": \"string\",\r\n          \"tariffTreatmentCode\": \"string\",\r\n          \"dutyRate\": 0.0,\r\n          \"dutyType\": \"string\",\r\n          \"exciseRate\": 0.0,\r\n          \"exciseType\": \"string\",\r\n          \"exciseTaxCode\": \"string\",\r\n          \"exciseTaxAmount\": 0.0,\r\n          \"gstCode\": \"string\",\r\n          \"gstRate\": 0.0,\r\n          \"gstRateIndicator\": \"string\",\r\n          \"totalDutyAndExcise\": 0.0,\r\n          \"simaCode\": \"string\",\r\n          \"simaAmt\": 0.0,\r\n          \"previousTransactionNumber\": \"string\",\r\n          \"previousLineNumber\": \"string\",\r\n          \"b3LineReference\": \"string\",\r\n          \"cadAdjustmentReasonCode\": \"string\",\r\n          \"cadAdjustmentNarrative\": \"string\",\r\n          \"bottlesPerCase\": 0.0,\r\n          \"bottleSize\": 0.0,\r\n          \"alcoholPercentage\": 0.0,\r\n          \"timeLimit\": 0,\r\n          \"timeUnit\": \"string\",\r\n          \"timeLimitDate\": {}\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionDetails"
+              },
+              {
+                "contentType": "text/json",
+                "sample": "{\r\n  \"transactionNumber\": \"string\",\r\n  \"carmRevisionNumber\": \"string\",\r\n  \"importerCode\": \"string\",\r\n  \"importerName\": \"string\",\r\n  \"b3TypeCode\": \"string\",\r\n  \"b3SubtypeCode\": \"string\",\r\n  \"releaseStatusCode\": \"string\",\r\n  \"lastReleaseStatusMessage\": \"string\",\r\n  \"lastReleaseStatusDateTime\": \"string\",\r\n  \"confirmStatusCode\": \"string\",\r\n  \"lastConfirmStatusMessage\": \"string\",\r\n  \"lastConfirmStatusDateTime\": \"string\",\r\n  \"exWarehouseTransactionTypeCode\": \"string\",\r\n  \"entryDate\": \"string\",\r\n  \"releaseDate\": \"string\",\r\n  \"portCode\": \"string\",\r\n  \"usPortOfExitCode\": \"string\",\r\n  \"portOfUnladingCode\": \"string\",\r\n  \"warehouseNumber\": \"string\",\r\n  \"forwardToCustomsOfficeCode\": \"string\",\r\n  \"destinationWarehouseNumber\": \"string\",\r\n  \"cargoControlNumbers\": [\r\n    {\r\n      \"ccno\": \"string\"\r\n    }\r\n  ],\r\n  \"containers\": [\r\n    {\r\n      \"containerNo\": \"string\"\r\n    }\r\n  ],\r\n  \"shipmentWeightGross\": 0,\r\n  \"shipmentWeightNet\": 0,\r\n  \"shipmentWeightUnit\": \"string\",\r\n  \"modeOfTransportCode\": \"string\",\r\n  \"carrierCode\": \"string\",\r\n  \"carrierName\": \"string\",\r\n  \"shipmentQuantities\": [\r\n    {\r\n      \"quantity\": 0,\r\n      \"quantityUnit\": \"string\"\r\n    }\r\n  ],\r\n  \"headerReferenceNumber\": \"string\",\r\n  \"b3Comments\": \"string\",\r\n  \"b3Notes\": \"string\",\r\n  \"invoices\": [\r\n    {\r\n      \"cciSequenceNumber\": 0,\r\n      \"b3SubheaderNumber\": {},\r\n      \"commercialInvoiceNumber\": \"string\",\r\n      \"commercialInvoiceDate\": \"string\",\r\n      \"poNumber\": \"string\",\r\n      \"poDate\": {},\r\n      \"referenceNumber\": \"string\",\r\n      \"vendorCode\": \"string\",\r\n      \"vendorName\": \"string\",\r\n      \"consigneeCode\": \"string\",\r\n      \"consigneeName\": \"string\",\r\n      \"countryOfExportCode\": \"string\",\r\n      \"dateOfDirectShipment\": \"string\",\r\n      \"cciQuantity\": 0,\r\n      \"cciQuantityUnitCode\": \"string\",\r\n      \"lines\": [\r\n        {\r\n          \"lineSequence\": 0,\r\n          \"b3PrintedLineNumber\": 0,\r\n          \"partNumber\": \"string\",\r\n          \"partDescription\": \"string\",\r\n          \"invoiceQuantity\": 0.0,\r\n          \"invoiceUnitCode\": \"string\",\r\n          \"b3Qty1\": 0.0,\r\n          \"b3UnitCode1\": \"string\",\r\n          \"b3Qty2\": 0.0,\r\n          \"b3UnitCode2\": \"string\",\r\n          \"b3WarehouseQty\": 0.0,\r\n          \"b3WarehouseUnitCode\": \"string\",\r\n          \"vfcc\": 0.0,\r\n          \"currencyCode\": \"string\",\r\n          \"exchangeRate\": 0.0,\r\n          \"vfdAmt\": 0.0,\r\n          \"hsCode\": \"string\",\r\n          \"tariffCode\": \"string\",\r\n          \"countryOfOriginCode\": \"string\",\r\n          \"provinceStateOfOriginCode\": \"string\",\r\n          \"tariffTreatmentCode\": \"string\",\r\n          \"dutyRate\": 0.0,\r\n          \"dutyType\": \"string\",\r\n          \"exciseRate\": 0.0,\r\n          \"exciseType\": \"string\",\r\n          \"exciseTaxCode\": \"string\",\r\n          \"exciseTaxAmount\": 0.0,\r\n          \"gstCode\": \"string\",\r\n          \"gstRate\": 0.0,\r\n          \"gstRateIndicator\": \"string\",\r\n          \"totalDutyAndExcise\": 0.0,\r\n          \"simaCode\": \"string\",\r\n          \"simaAmt\": 0.0,\r\n          \"previousTransactionNumber\": \"string\",\r\n          \"previousLineNumber\": \"string\",\r\n          \"b3LineReference\": \"string\",\r\n          \"cadAdjustmentReasonCode\": \"string\",\r\n          \"cadAdjustmentNarrative\": \"string\",\r\n          \"bottlesPerCase\": 0.0,\r\n          \"bottleSize\": 0.0,\r\n          \"alcoholPercentage\": 0.0,\r\n          \"timeLimit\": 0,\r\n          \"timeUnit\": \"string\",\r\n          \"timeLimitDate\": {}\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionDetails"
+              }
+            ]
+          },
+          {
+            "statusCode": 204,
+            "description": "NoContent - The requested transaction number could not be found",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 400,
+            "description": "BadRequest - Missing or invalid parameters",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "description": "Unauthorized - Missing or invalid credentials",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 500,
+            "description": "InternalServerError - Unexpected error",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          }
+        ],
+        "displayName": "Get VI Transaction details for a specific Transaction Number",
+        "method": "GET",
+        "urlTemplate": "/api/VITransactionDetails/{transactionNumber}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI/VITransactionDetails_GetVITransactionDetails')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'VITransAPI')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'VITransAPI', '63ed7343200ea708cc3a8ade')]"
+      ]
+    },
+    {
+      "properties": {
+        "displayName": "VITransactionDetails"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI/VITransactionDetails_GetVITransactionDetails/VITransactionDetails')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations/tags",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('ApimServiceName'), 'VITransAPI', 'VITransactionDetails_GetVITransactionDetails')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [],
+        "description": "Gets a list of VI Transaction records based on specific filters",
+        "request": {
+          "queryParameters": [
+            {
+              "name": "TransactionType",
+              "description": "Transaction type HVS or LVS (leave empty for all transactions)",
+              "type": "string",
+              "required": false,
+              "values": []
+            },
+            {
+              "name": "B3TypeCode",
+              "description": "Valid B3/CARM Transaction Type code (e.g. \"AB\", \"20\", etc.)",
+              "type": "string",
+              "required": false,
+              "values": []
+            },
+            {
+              "name": "ImporterCode",
+              "description": "Filter transactions for a specific Importer",
+              "type": "string",
+              "required": false,
+              "values": []
+            },
+            {
+              "name": "DateType",
+              "description": "Date used to filter the transactions. Possible values:\nA  - Accounting (k84) Date\nR  - Release Date\nU  - Updated Date (or Created Date if entry has never been updated) - Default criteria if empty\nAC - ACROSS Status/Transmission Date (requires TransmissionStatusCodes parameter)\nCX - CADEX Status/Transmission Date (requires TransmissionStatusCodes parameter)",
+              "type": "string",
+              "required": false,
+              "values": []
+            },
+            {
+              "name": "StartDate",
+              "description": "Format - date-time (as date-time in RFC3339). Start of the date range (leave empty for 1st day of current month)",
+              "type": "string",
+              "required": false,
+              "values": []
+            },
+            {
+              "name": "EndDate",
+              "description": "Format - date-time (as date-time in RFC3339). End of the date range (leave empty for today's date)",
+              "type": "string",
+              "required": false,
+              "values": []
+            },
+            {
+              "name": "TransmissionStatusCodes",
+              "description": "Required for DateType values \"AC\" and \"CX\". Concatenation of any of these possible values:\nA - Accepted\nR - Rejected\nT - Transmitted\nP - Pending\nQ - Queued",
+              "type": "string",
+              "required": false,
+              "values": []
+            }
+          ],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [
+          {
+            "statusCode": 200,
+            "description": "OK - Returns a list of VI Transaction records",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionRecord"
+              },
+              {
+                "contentType": "application/json",
+                "sample": "{\r\n  \"transactionNumber\": \"string\",\r\n  \"b3Type\": \"string\",\r\n  \"releaseStatus\": \"string\",\r\n  \"confirmStatus\": \"string\",\r\n  \"importerCode\": \"string\",\r\n  \"importerName\": \"string\",\r\n  \"dateType\": \"string\",\r\n  \"date\": \"string\"\r\n}",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionRecord"
+              },
+              {
+                "contentType": "text/json",
+                "sample": "{\r\n  \"transactionNumber\": \"string\",\r\n  \"b3Type\": \"string\",\r\n  \"releaseStatus\": \"string\",\r\n  \"confirmStatus\": \"string\",\r\n  \"importerCode\": \"string\",\r\n  \"importerName\": \"string\",\r\n  \"dateType\": \"string\",\r\n  \"date\": \"string\"\r\n}",
+                "schemaId": "63ed7343200ea708cc3a8ade",
+                "typeName": "VITransactionRecord"
+              }
+            ]
+          },
+          {
+            "statusCode": 204,
+            "description": "NoContent - The query returned no results",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 400,
+            "description": "BadRequest - Missing or invalid parameters",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 401,
+            "description": "Unauthorized - Missing or invalid credentials",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          },
+          {
+            "statusCode": 500,
+            "description": "InternalServerError - Unexpected error",
+            "headers": [],
+            "representations": [
+              {
+                "contentType": "text/plain"
+              },
+              {
+                "contentType": "application/json"
+              },
+              {
+                "contentType": "text/json"
+              }
+            ]
+          }
+        ],
+        "displayName": "Gets a list of VI Transaction records based on specific filters",
+        "method": "GET",
+        "urlTemplate": "/api/VITransactions"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI/VITransactions_GetVITransactions')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'VITransAPI')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis/schemas', parameters('ApimServiceName'), 'VITransAPI', '63ed7343200ea708cc3a8ade')]"
+      ]
+    },
+    {
+      "properties": {
+        "displayName": "VITransactions"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI/VITransactions_GetVITransactions/VITransactions')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations/tags",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('ApimServiceName'), 'VITransAPI', 'VITransactions_GetVITransactions')]"
+      ]
+    },
+    {
+      "properties": {
+        "value": "[concat(parameters('PolicyXMLBaseUrl'), '/VITransAPI-apiPolicy.xml', parameters('PolicyXMLSasToken'))]",
+        "format": "rawxml-link"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/VITransAPI/policy')]",
+      "type": "Microsoft.ApiManagement/service/apis/policies",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'VITransAPI')]"
+      ]
+    }
+  ]
+}

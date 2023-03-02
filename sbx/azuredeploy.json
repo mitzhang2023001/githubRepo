@@ -1,0 +1,130 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {},
+    "resources": [
+      {
+            "type": "Microsoft.ApiManagement/service",
+            "apiVersion": "2022-04-01-preview",
+            "name": "[parameters('service_apim_liquor_dev_01_name')]",
+            "location": "Canada Central",
+            "tags": {
+                "Application": "APIM",
+                "BusinessUnit": "LiquorWholesale",
+                "Environment": "Dev",
+                "Location": "CC",
+                "ManagedBy": "LiquorWholesale",
+                "Owner": "tony.lee@bcldb.com",
+                "ServiceClass": "Tier1",
+                "SupportEmail": "tony.lee@bcldb.com"
+            },
+            "sku": {
+                "name": "Developer",
+                "capacity": 1
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "publisherEmail": "azureservices@bcldb.ca",
+                "publisherName": "BCLDB",
+                "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
+                "hostnameConfigurations": [
+                    {
+                        "type": "Proxy",
+                        "hostName": "[concat(parameters('service_apim_liquor_dev_01_name'), '.azure-api.net')]",
+                        "negotiateClientCertificate": true,
+                        "defaultSslBinding": false,
+                        "certificateSource": "BuiltIn"
+                    },
+                    {
+                        "type": "DeveloperPortal",
+                        "hostName": "apiportal-dev.cloudapps.bcldb.com",
+                        "keyVaultId": "https://kv-apimliq-dev-01.vault.azure.net/secrets/apiportal-dev",
+                        "negotiateClientCertificate": false,
+                        "certificate": {
+                            "expiry": "2023-07-07T17:37:26+00:00",
+                            "thumbprint": "05B6B15422FA1F0154B1B0F65C8AB265DCACE72F",
+                            "subject": "CN=apiportal-dev.cloudapps.bcldb.com, O=The Government of the Province of British Columbia, L=Burnaby, S=British Columbia, C=CA"
+                        },
+                        "defaultSslBinding": false,
+                        "certificateSource": "KeyVault"
+                    },
+                    {
+                        "type": "Management",
+                        "hostName": "apimgmt-dev.cloudapps.bcldb.com",
+                        "keyVaultId": "[concat('https://kv-apimliq-dev-01.vault.azure.net/secrets/', parameters('service_apim_liquor_dev_01_name'), '-apimgmt-dev-01')]",
+                        "negotiateClientCertificate": false,
+                        "certificate": {
+                            "expiry": "2023-08-14T22:12:11+00:00",
+                            "thumbprint": "F66A99E7897DDF147E218E6C92C43392FADC62EE",
+                            "subject": "CN=apimgmt-dev.cloudapps.bcldb.com, O=The Government of the Province of British Columbia, L=Burnaby, S=British Columbia, C=CA"
+                        },
+                        "defaultSslBinding": false,
+                        "certificateSource": "KeyVault"
+                    },
+                    {
+                        "type": "Proxy",
+                        "hostName": "apim-dev.cloudapps.bcldb.com",
+                        "negotiateClientCertificate": false,
+                        "certificate": {
+                            "expiry": "2023-04-25T23:59:59+00:00",
+                            "thumbprint": "AFC7963B75DEC9771773C0AEA6A4EC49C4A01ABC",
+                            "subject": "CN=apim-dev.cloudapps.bcldb.com"
+                        },
+                        "defaultSslBinding": true,
+                        "certificateSource": "Managed"
+                    },
+                    {
+                        "type": "Proxy",
+                        "hostName": "api-direct.cloudapps.bcldb.com",
+                        "negotiateClientCertificate": false,
+                        "certificate": {
+                            "expiry": "2023-05-07T23:59:59+00:00",
+                            "thumbprint": "35C3473D8A519AB796AEB4A2C5FFF431A7CAAF0C",
+                            "subject": "CN=api-direct.cloudapps.bcldb.com"
+                        },
+                        "defaultSslBinding": false,
+                        "certificateSource": "Managed"
+                    }
+                ],
+                "virtualNetworkConfiguration": {
+                    "subnetResourceId": "[concat(parameters('virtualnetworks_vnet_apimliq_dev_cc_01_externalid'), '/subnets/snet-apimliq-10_30_2_0__27')]"
+                },
+                "customProperties": {
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Ssl30": "false"
+                },
+                "virtualNetworkType": "External",
+                "certificates": [
+                    {
+                        "storeName": "Root",
+                        "certificate": {
+                            "expiry": "2023-11-11T23:41:15+00:00",
+                            "thumbprint": "86136A8C6135D7A3A53CBF43B7A208EAEE9B2389",
+                            "subject": "E=Scott.Petersen@bcldb.com, CN=bcldb.com, OU=BC Liquor Distribution Branch, O=The Government of the Province of British Columbia, L=Vancouver, S=British Columbia, C=CA"
+                        }
+                    }
+                ],
+                "disableGateway": false,
+                "natGatewayState": "Disabled",
+                "apiVersionConstraint": {},
+                "publicIpAddressId": "[parameters('publicIPAddresses_pip_apim_liquor_dev_01_externalid')]",
+                "publicNetworkAccess": "Enabled"
+            }
+        }
+
+    
+    
+    
+    ],
+    "outputs": {}
+}
